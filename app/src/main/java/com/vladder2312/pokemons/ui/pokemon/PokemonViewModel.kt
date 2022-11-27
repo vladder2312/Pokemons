@@ -15,7 +15,7 @@ class PokemonViewModel @Inject constructor(
     private val repository: PokemonsRepository
 ) : ViewModel() {
 
-    val pokemonDetails = MutableLiveData<Resource<PokemonDetails>>()
+    val pokemonDetails = MutableLiveData<Resource<PokemonDetails>>(Resource.loading(null))
 
     fun getDetails(id: String) {
         viewModelScope.launch {

@@ -1,6 +1,5 @@
 package com.vladder2312.pokemons.ui.main
 
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +26,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun getPokemons() {
+    private suspend fun getPokemons() {
         repository.getPokemons()
             .cachedIn(viewModelScope)
             .map { pokemons.value = it }

@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.vladder2312.pokemons.R
 import com.vladder2312.pokemons.databinding.FragmentMainBinding
+import com.vladder2312.pokemons.ui.pokemon.PokemonFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,7 +26,7 @@ class MainFragment : Fragment() {
     private val pokemonsAdapter = PokemonsAdapter {
         findNavController().navigate(
             resId = R.id.action_mainFragment_to_pokemonFragment,
-            args = bundleOf("pokemonId" to it)
+            args = bundleOf(PokemonFragment.POKEMON_ID_PARAM to it)
         )
     }
 
