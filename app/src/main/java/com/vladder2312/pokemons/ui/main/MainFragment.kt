@@ -1,16 +1,15 @@
 package com.vladder2312.pokemons.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.vladder2312.pokemons.databinding.FragmentMainBinding
-import com.vladder2312.pokemons.domain.Status
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -24,6 +23,8 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
+    private val pokemonsAdapter = PokemonsAdapter { viewModel.openPokemonScreen(it) }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,14 +36,14 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.pokemonList.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    Log.e("POKEAPI", it.data.toString())
-                    Toast.makeText(context, "SUCCESS", Toast.LENGTH_SHORT).show()
-                }
-                Status.LOADING -> Toast.makeText(context, "LOADING", Toast.LENGTH_SHORT).show()
-                Status.ERROR -> Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
+
+        with(binding.mainRecyclerView) {
+            adapter = pokemonsAdapter
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.pokemons.observe(viewLifecycleOwner) {
+                pokemonsAdapter.submitData(lifecycle, it)
             }
         }
     }

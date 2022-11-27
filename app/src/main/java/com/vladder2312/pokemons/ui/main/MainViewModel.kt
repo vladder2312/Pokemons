@@ -1,41 +1,39 @@
 package com.vladder2312.pokemons.ui.main
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vladder2312.pokemons.data.PokemonsRepository
-import com.vladder2312.pokemons.domain.Pokemons
-import com.vladder2312.pokemons.domain.Resource
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.vladder2312.pokemons.data.responses.PokemonsRepository
+import com.vladder2312.pokemons.domain.Pokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val pokemonsRepository: PokemonsRepository
+    private val repository: PokemonsRepository
 ) : ViewModel() {
 
-    private val _pokemonList = MutableLiveData<Resource<Pokemons>>()
-    val pokemonList: LiveData<Resource<Pokemons>> get() = _pokemonList
+    val pokemons = MutableLiveData<PagingData<Pokemon>>()
 
     init {
-        getPokemonList()
-    }
-
-    fun getPokemonList() {
         viewModelScope.launch {
-            _pokemonList.postValue(Resource.loading(null))
-            pokemonsRepository.getPokemons(
-                limit = POKEMON_LIMIT,
-                offset = 0 //TODO
-            ).let {
-                _pokemonList.postValue(it)
-            }
+            getPokemons()
         }
     }
 
-    private companion object {
-        const val POKEMON_LIMIT = 50
+    suspend fun getPokemons() {
+        repository.getPokemons()
+            .cachedIn(viewModelScope)
+            .map { pokemons.value = it }
+            .launchIn(viewModelScope)
+    }
+
+    fun openPokemonScreen(id: String) {
+        //TODO
     }
 }
