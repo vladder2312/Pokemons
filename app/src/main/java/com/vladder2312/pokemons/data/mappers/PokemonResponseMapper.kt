@@ -9,30 +9,40 @@ import com.vladder2312.pokemons.domain.Sprites
 
 object PokemonResponseMapper {
 
-    fun transform(pokemonObject: PokemonObj) = Pokemon(
-        id = pokemonObject.url
-            .removeSuffix("/")
-            .substringAfterLast("/"),
-        name = pokemonObject.name
-    )
+    fun transform(pokemonObject: PokemonObj): Pokemon {
+        with(pokemonObject) {
+            return Pokemon(
+                id = url.removeSuffix("/").substringAfterLast("/"),
+                name = name
+            )
+        }
+    }
 
-    fun transform(pokemonDetails: PokemonDetailsResponse) = PokemonDetails(
-        id = pokemonDetails.id,
-        name = pokemonDetails.name.replaceFirstChar { it.uppercaseChar() },
-        height = pokemonDetails.height,
-        weight = pokemonDetails.weight,
-        baseExperience = pokemonDetails.baseExperience,
-        sprites = transform(pokemonDetails.sprites)
-    )
+    fun transform(pokemonDetails: PokemonDetailsResponse): PokemonDetails {
+        with(pokemonDetails) {
+            return PokemonDetails(
+                id = id,
+                name = name.replaceFirstChar { it.uppercaseChar() },
+                height = height,
+                weight = weight,
+                baseExperience = baseExperience,
+                sprites = transform(sprites)
+            )
+        }
+    }
 
-    private fun transform(pokemonSprites: SpritesObj) = Sprites(
-        backDefault = pokemonSprites.backDefault,
-        backFemale = pokemonSprites.backFemale,
-        backShiny = pokemonSprites.backShiny,
-        backShinyFemale = pokemonSprites.backShinyFemale,
-        frontDefault = pokemonSprites.frontDefault,
-        frontFemale = pokemonSprites.frontFemale,
-        frontShiny = pokemonSprites.frontShiny,
-        frontShinyFemale = pokemonSprites.frontShinyFemale
-    )
+    private fun transform(pokemonSprites: SpritesObj): Sprites {
+        with(pokemonSprites) {
+            return Sprites(
+                backDefault = backDefault,
+                backFemale = backFemale,
+                backShiny = backShiny,
+                backShinyFemale = backShinyFemale,
+                frontDefault = frontDefault,
+                frontFemale = frontFemale,
+                frontShiny = frontShiny,
+                frontShinyFemale = frontShinyFemale
+            )
+        }
+    }
 }
