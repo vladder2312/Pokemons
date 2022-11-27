@@ -1,5 +1,6 @@
 package com.vladder2312.pokemons.ui.main
 
+import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +35,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun openPokemonScreen(id: String) {
-        //TODO
+        val bundle = bundleOf("pokemonId" to id)
+
     }
 }
