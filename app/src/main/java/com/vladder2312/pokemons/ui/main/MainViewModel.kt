@@ -33,9 +33,4 @@ class MainViewModel @Inject constructor(
             .map { pokemons.value = it }
             .launchIn(viewModelScope)
     }
-
-    fun openPokemonScreen(id: String) {
-        val bundle = bundleOf("pokemonId" to id)
-
-    }
 }

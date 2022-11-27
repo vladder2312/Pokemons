@@ -17,10 +17,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private val viewModel by viewModels<MainViewModel>()
 
     private var _binding: FragmentMainBinding? = null
