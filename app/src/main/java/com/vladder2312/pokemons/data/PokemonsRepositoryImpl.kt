@@ -1,11 +1,8 @@
-package com.vladder2312.pokemons.data.responses
+package com.vladder2312.pokemons.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.vladder2312.pokemons.data.PokemonsPagingSource
-import com.vladder2312.pokemons.data.PokemonsService
-import com.vladder2312.pokemons.data.ServiceConstants
 import com.vladder2312.pokemons.data.mappers.PokemonResponseMapper
 import com.vladder2312.pokemons.domain.Pokemon
 import com.vladder2312.pokemons.domain.PokemonDetails

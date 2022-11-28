@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.vladder2312.pokemons.data.responses.PokemonsRepository
+import com.vladder2312.pokemons.data.PokemonsRepository
 import com.vladder2312.pokemons.domain.Pokemon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

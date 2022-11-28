@@ -1,4 +1,4 @@
-package com.vladder2312.pokemons.data.responses
+package com.vladder2312.pokemons.data
 
 import androidx.paging.PagingData
 import com.vladder2312.pokemons.domain.Pokemon

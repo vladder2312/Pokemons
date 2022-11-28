@@ -3,7 +3,7 @@ package com.vladder2312.pokemons.ui.pokemon
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vladder2312.pokemons.data.responses.PokemonsRepository
+import com.vladder2312.pokemons.data.PokemonsRepository
 import com.vladder2312.pokemons.domain.PokemonDetails
 import com.vladder2312.pokemons.domain.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
