@@ -17,7 +17,7 @@ class PokemonsInteractor @Inject constructor(
     fun getPokemons(): Flow<PagingData<Pokemon>> {
         return Pager(
             config = PagingConfig(
-                pageSize = ServiceConstants.POKEMONS_LIMIT,
+                pageSize = POKEMONS_LIMIT,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
@@ -28,9 +28,11 @@ class PokemonsInteractor @Inject constructor(
 
     fun getPokemon(id: String): Flow<Resource<PokemonDetails>> {
         return flow {
-            repository.getPokemonDetails(id).let {
-                emit(it)
-            }
+            emit(repository.getPokemonDetails(id))
         }
+    }
+
+    private companion object {
+        const val POKEMONS_LIMIT = 50
     }
 }

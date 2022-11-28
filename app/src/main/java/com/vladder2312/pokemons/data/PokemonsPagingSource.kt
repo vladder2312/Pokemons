@@ -18,16 +18,16 @@ class PokemonsPagingSource @Inject constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Pokemon> {
         val page: Int = params.key ?: 1
-        val pageSize: Int = params.loadSize.coerceAtMost(ServiceConstants.POKEMONS_LIMIT)
+        val pageSize: Int = params.loadSize
         val offset = if (params.key != null) {
-            ((page - 1) * ServiceConstants.POKEMONS_LIMIT) + 1
+            ((page - 1) * pageSize) + 1
         } else {
             0
         }
         val response = pokemonsRepository.getPokemons(pageSize, offset)
         return if (response.status == Status.SUCCESS && response.data != null) {
             val pokemons = response.data.list
-            val nextKey = if (pokemons.size < ServiceConstants.POKEMONS_LIMIT) null else page + 1
+            val nextKey = if (pokemons.size < pageSize) null else page + 1
             val prevKey = if (page == 1) null else page - 1
             LoadResult.Page(pokemons, prevKey, nextKey)
         } else {

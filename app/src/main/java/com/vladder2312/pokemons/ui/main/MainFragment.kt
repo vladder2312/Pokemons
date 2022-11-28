@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.vladder2312.pokemons.R
 import com.vladder2312.pokemons.databinding.FragmentMainBinding
 import com.vladder2312.pokemons.ui.pokemon.PokemonFragment
+import com.vladder2312.pokemons.utils.observe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -23,12 +24,7 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private val pokemonsAdapter = PokemonsAdapter {
-        findNavController().navigate(
-            resId = R.id.action_mainFragment_to_pokemonFragment,
-            args = bundleOf(PokemonFragment.POKEMON_ID_PARAM to it)
-        )
-    }
+    private val pokemonsAdapter = PokemonsAdapter { viewModel.openPokemonScreen(it) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +46,17 @@ class MainFragment : Fragment() {
             viewModel.pokemons.observe(viewLifecycleOwner) {
                 pokemonsAdapter.submitData(lifecycle, it)
             }
+            viewModel.openScreenEvent.observe(viewLifecycleOwner) {
+                openPokemonScreen(it)
+            }
         }
+    }
+
+    private fun openPokemonScreen(id: String) {
+        findNavController().navigate(
+            resId = R.id.action_mainFragment_to_pokemonFragment,
+            args = bundleOf(PokemonFragment.POKEMON_ID_PARAM to id)
+        )
     }
 
     override fun onDestroyView() {
