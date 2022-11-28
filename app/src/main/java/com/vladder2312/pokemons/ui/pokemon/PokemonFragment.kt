@@ -48,7 +48,7 @@ class PokemonFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.pokemonDetails.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.SUCCESS -> it.data?.let { data -> render(data) }
+                Status.SUCCESS -> it.data?.let { data -> showPokemonData(data) }
                 Status.LOADING -> {
                     Toast.makeText(context, it.status.name, Toast.LENGTH_SHORT).show()
                 }
@@ -60,17 +60,17 @@ class PokemonFragment : Fragment() {
         }
     }
 
-    private fun render(data: PokemonDetails) {
-        with(data) {
-            binding.pokemonNameTv.text = name
-            binding.pokemonHeightTv.text = height.toString()
-            binding.pokemonWeightTv.text = weight.toString()
+    private fun showPokemonData(data: PokemonDetails) {
+        with(binding) {
+            pokemonNameTv.text = data.name
+            pokemonHeightTv.text = data.height.toString()
+            pokemonWeightTv.text = data.weight.toString()
             Glide.with(requireContext())
-                .load(sprites.frontDefault ?: sprites.frontFemale)
-                .into(binding.pokemonFrontIv)
+                .load(data.sprites.frontDefault ?: data.sprites.frontFemale)
+                .into(pokemonFrontIv)
             Glide.with(requireContext())
-                .load(sprites.backDefault ?: sprites.backFemale)
-                .into(binding.pokemonBackIv)
+                .load(data.sprites.backDefault ?: data.sprites.backFemale)
+                .into(pokemonBackIv)
         }
     }
 
