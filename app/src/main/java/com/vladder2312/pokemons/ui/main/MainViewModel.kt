@@ -26,14 +26,14 @@ class MainViewModel @Inject constructor(
         getPokemons()
     }
 
+    fun openPokemonScreen(id: String) {
+        _openScreenEvent.trySend(id)
+    }
+
     private fun getPokemons() {
         pokemonsInteractor.getPokemons()
             .cachedIn(viewModelScope)
             .map { _pokemons.value = it }
             .launchIn(viewModelScope)
-    }
-
-    fun openPokemonScreen(id: String) {
-        _openScreenEvent.trySend(id)
     }
 }

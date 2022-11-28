@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.vladder2312.pokemons.R
 import com.vladder2312.pokemons.databinding.FragmentMainBinding
 import com.vladder2312.pokemons.ui.pokemon.PokemonFragment
 import com.vladder2312.pokemons.utils.observe
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -38,17 +36,20 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding.mainRecyclerView) {
-            adapter = pokemonsAdapter
-        }
+        initViews()
+        observeViewModel()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.pokemons.observe(viewLifecycleOwner) {
-                pokemonsAdapter.submitData(lifecycle, it)
-            }
-            viewModel.openScreenEvent.observe(viewLifecycleOwner) {
-                openPokemonScreen(it)
-            }
+    private fun initViews() {
+        binding.mainRecyclerView.adapter = pokemonsAdapter
+    }
+
+    private fun observeViewModel() {
+        viewModel.pokemons.observe(viewLifecycleOwner) {
+            pokemonsAdapter.submitData(lifecycle, it)
+        }
+        viewModel.openScreenEvent.observe(viewLifecycleOwner) {
+            openPokemonScreen(it)
         }
     }
 
