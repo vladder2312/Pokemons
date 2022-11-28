@@ -1,22 +1,12 @@
 package com.vladder2312.pokemons.data.mappers
 
 import com.vladder2312.pokemons.data.responses.PokemonDetailsResponse
-import com.vladder2312.pokemons.data.responses.PokemonObj
 import com.vladder2312.pokemons.data.responses.SpritesObj
-import com.vladder2312.pokemons.domain.Pokemon
 import com.vladder2312.pokemons.domain.PokemonDetails
 import com.vladder2312.pokemons.domain.Sprites
+import javax.inject.Inject
 
-object PokemonResponseMapper {
-
-    fun transform(pokemonObject: PokemonObj): Pokemon {
-        with(pokemonObject) {
-            return Pokemon(
-                id = url.removeSuffix("/").substringAfterLast("/"),
-                name = name
-            )
-        }
-    }
+class PokemonDetailsResponseMapper @Inject constructor() {
 
     fun transform(pokemonDetails: PokemonDetailsResponse): PokemonDetails {
         with(pokemonDetails) {

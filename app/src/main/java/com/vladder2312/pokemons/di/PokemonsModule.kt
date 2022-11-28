@@ -2,10 +2,12 @@ package com.vladder2312.pokemons.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.vladder2312.pokemons.data.PokemonsService
-import com.vladder2312.pokemons.data.ServiceConstants
 import com.vladder2312.pokemons.data.PokemonsRepository
 import com.vladder2312.pokemons.data.PokemonsRepositoryImpl
+import com.vladder2312.pokemons.data.PokemonsService
+import com.vladder2312.pokemons.data.ServiceConstants
+import com.vladder2312.pokemons.data.mappers.PokemonDetailsResponseMapper
+import com.vladder2312.pokemons.data.mappers.PokemonsResponseMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,7 +50,23 @@ object PokemonsModule {
     }
 
     @Provides
+    @Singleton
+    fun providePokemonsResponseMapper(): PokemonsResponseMapper {
+        return PokemonsResponseMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun providePokemonDetailsResponseMapper(): PokemonDetailsResponseMapper {
+        return PokemonDetailsResponseMapper()
+    }
+
+    @Provides
     fun providePokemonsRepository(): PokemonsRepository {
-        return PokemonsRepositoryImpl(providePokemonsService())
+        return PokemonsRepositoryImpl(
+            service = providePokemonsService(),
+            pokemonDetailsMapper = providePokemonDetailsResponseMapper(),
+            pokemonsResponseMapper = providePokemonsResponseMapper()
+        )
     }
 }

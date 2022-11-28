@@ -36,7 +36,7 @@ class PokemonFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getString(POKEMON_ID_PARAM)?.let {
-            viewModel.getDetails(it)
+            viewModel.getPokemonDetails(it)
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.pokemonDetails.observe(viewLifecycleOwner) {

@@ -3,7 +3,7 @@ package com.vladder2312.pokemons.ui.pokemon
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vladder2312.pokemons.data.PokemonsRepository
+import com.vladder2312.pokemons.data.PokemonsInteractor
 import com.vladder2312.pokemons.domain.PokemonDetails
 import com.vladder2312.pokemons.domain.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,14 +12,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    private val repository: PokemonsRepository
+    private val pokemonsInteractor: PokemonsInteractor
 ) : ViewModel() {
 
     val pokemonDetails = MutableLiveData<Resource<PokemonDetails>>(Resource.loading(null))
 
-    fun getDetails(id: String) {
+    fun getPokemonDetails(id: String) {
         viewModelScope.launch {
-            repository.getPokemon(id).collect { pokemonDetails.value = it }
+            pokemonsInteractor.getPokemon(id).collect { pokemonDetails.value = it }
         }
     }
 }

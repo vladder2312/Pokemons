@@ -2,13 +2,12 @@ package com.vladder2312.pokemons.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.vladder2312.pokemons.data.mappers.PokemonResponseMapper
 import com.vladder2312.pokemons.domain.Pokemon
-import retrofit2.HttpException
+import com.vladder2312.pokemons.domain.Status
 import javax.inject.Inject
 
 class PokemonsPagingSource @Inject constructor(
-    private val pokemonsService: PokemonsService
+    private val pokemonsRepository: PokemonsRepository
 ) : PagingSource<Int, Pokemon>() {
 
     override fun getRefreshKey(state: PagingState<Int, Pokemon>): Int? {
@@ -25,16 +24,14 @@ class PokemonsPagingSource @Inject constructor(
         } else {
             0
         }
-        val response = pokemonsService.getPokemons(pageSize, offset)
-        return if (response.isSuccessful) {
-            val pokemons = checkNotNull(response.body()).let {
-                it.results.map { obj -> PokemonResponseMapper.transform(obj) }
-            }
+        val response = pokemonsRepository.getPokemons(pageSize, offset)
+        return if (response.status == Status.SUCCESS && response.data != null) {
+            val pokemons = response.data.list
             val nextKey = if (pokemons.size < ServiceConstants.POKEMONS_LIMIT) null else page + 1
             val prevKey = if (page == 1) null else page - 1
             LoadResult.Page(pokemons, prevKey, nextKey)
         } else {
-            LoadResult.Error(HttpException(response))
+            LoadResult.Error(Exception(response.message))
         }
     }
 }
