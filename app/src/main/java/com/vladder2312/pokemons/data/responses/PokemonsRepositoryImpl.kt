@@ -6,8 +6,12 @@ import androidx.paging.PagingData
 import com.vladder2312.pokemons.data.PokemonsPagingSource
 import com.vladder2312.pokemons.data.PokemonsService
 import com.vladder2312.pokemons.data.ServiceConstants
+import com.vladder2312.pokemons.data.mappers.PokemonResponseMapper
 import com.vladder2312.pokemons.domain.Pokemon
+import com.vladder2312.pokemons.domain.PokemonDetails
+import com.vladder2312.pokemons.domain.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class PokemonsRepositoryImpl @Inject constructor(
@@ -24,5 +28,17 @@ class PokemonsRepositoryImpl @Inject constructor(
                 PokemonsPagingSource(service)
             }
         ).flow
+    }
+
+    override suspend fun getPokemon(id: String): Flow<Resource<PokemonDetails>> {
+        return flow {
+            service.getPokemon(id).let {
+                if (it.isSuccessful && it.body() != null) {
+                    emit(Resource.success(PokemonResponseMapper.transform(it.body()!!)))
+                } else {
+                    emit(Resource.error(it.message(), null))
+                }
+            }
+        }
     }
 }

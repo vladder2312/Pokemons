@@ -26,14 +26,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun getPokemons() {
+    private suspend fun getPokemons() {
         repository.getPokemons()
             .cachedIn(viewModelScope)
             .map { pokemons.value = it }
             .launchIn(viewModelScope)
-    }
-
-    fun openPokemonScreen(id: String) {
-        //TODO
     }
 }
